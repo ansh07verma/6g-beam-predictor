@@ -33,11 +33,6 @@ _SCENARIO_DEFAULTS = {
         'n_subcarriers': 1, 'subcarrier_idx': 0, 'num_paths': 10,
         'description': 'Outdoor-1B, 28 GHz mmWave',
     },
-    'asu_campus_3p5': {
-        'N_t': 64, 'N_b_ant_shape': [64, 1],
-        'n_subcarriers': 1, 'subcarrier_idx': 0, 'num_paths': 10,
-        'description': 'ASU Campus, 3.5 GHz outdoor',
-    },
 }
 
 
