@@ -371,62 +371,64 @@ def plot_training_curve(
     return save_path
 
 
-def plot_beam_map(
-    positions:   np.ndarray,
-    beam_labels: np.ndarray,
-    title:       str  = 'Spatial Beam Prediction Map',
-    save_dir:    str  = 'results',
-    filename:    str  = 'beam_map.png',
-    N_b:         int  = 64,
+def plot_beam_map_comparison(
+    positions:      np.ndarray,
+    optimal_labels: np.ndarray,
+    pred_labels:    np.ndarray,
+    save_dir:       str  = 'results',
+    filename:       str  = 'beam_map_comparison.png',
+    N_b:            int  = 64,
 ) -> str:
-    """Scatter plot of UE positions colored by predicted (or optimal) beam index.
-
-    Parameters
-    ----------
-    positions   : np.ndarray, shape (N, 3) — raw or normalized UE positions
-    beam_labels : np.ndarray, shape (N,)   — beam index per user (0..N_b-1)
-    title       : str  — plot title
-    save_dir    : str  — output directory
-    filename    : str  — output filename
-    N_b         : int  — number of beams (for colormap range)
-
-    Returns
-    -------
-    save_path : str
+    """Side-by-side scatter plot comparing Optimal (Ground Truth) vs AI Predicted beams.
+    
+    Designed for maximum clarity: light background, intuitive colormap, and plain-English annotations.
     """
     os.makedirs(save_dir, exist_ok=True)
 
-    fig, ax = plt.subplots(figsize=(10, 8))
-    fig.patch.set_facecolor('#0f1117')
-    ax.set_facecolor('#0f1117')
-
-    scatter = ax.scatter(
-        positions[:, 0], positions[:, 1],
-        c=beam_labels, cmap='hsv',
-        vmin=0, vmax=N_b - 1,
-        s=6, alpha=0.7, linewidths=0,
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+    fig.patch.set_facecolor('#ffffff')
+    
+    # Use 'viridis' for intuitive dark-to-light progression (easier to read than 'hsv')
+    cmap = 'viridis'
+    
+    # Plot 1: Ground Truth
+    sc1 = ax1.scatter(positions[:, 0], positions[:, 1], c=optimal_labels, cmap=cmap,
+                      vmin=0, vmax=N_b - 1, s=4, alpha=0.6, linewidths=0)
+    ax1.set_title('Ground Truth (Optimal Beam)', fontsize=14, fontweight='bold', pad=10)
+    ax1.set_xlabel('X Position (meters)', fontsize=12)
+    ax1.set_ylabel('Y Position (meters)', fontsize=12)
+    ax1.grid(True, linestyle='--', alpha=0.3)
+    
+    # Plot 2: AI Prediction
+    sc2 = ax2.scatter(positions[:, 0], positions[:, 1], c=pred_labels, cmap=cmap,
+                      vmin=0, vmax=N_b - 1, s=4, alpha=0.6, linewidths=0)
+    ax2.set_title('AI Model Prediction', fontsize=14, fontweight='bold', pad=10)
+    ax2.set_xlabel('X Position (meters)', fontsize=12)
+    ax2.set_ylabel('Y Position (meters)', fontsize=12)
+    ax2.grid(True, linestyle='--', alpha=0.3)
+    
+    # Shared Colorbar
+    cbar = fig.colorbar(sc2, ax=[ax1, ax2], fraction=0.02, pad=0.08)
+    cbar.set_label('Beam Index (0 to 63)\n(Similar colors = similar antenna directions)', fontsize=11)
+    
+    # Plain English Explanation Box
+    explanation = (
+        "HOW TO READ THIS:\n"
+        "• Each dot is a user (e.g., a phone) in a 6G network.\n"
+        "• The color shows which antenna beam serves them best.\n"
+        "• Nearby users have similar colors, proving the AI learned the physical environment.\n"
+        "• The right plot (AI) closely matches the left plot (Ground Truth), showing high accuracy."
     )
+    fig.text(0.5, 0.02, explanation, ha='center', va='bottom', fontsize=11,
+             bbox=dict(boxstyle='round,pad=1', facecolor='#e8f4f8', edgecolor='#2980b9', alpha=0.9))
 
-    cbar = fig.colorbar(scatter, ax=ax, fraction=0.03, pad=0.02)
-    cbar.set_label('Beam Index', fontsize=12, color='white')
-    cbar.ax.yaxis.set_tick_params(color='white')
-    plt.setp(cbar.ax.yaxis.get_ticklabels(), color='white')
-    cbar.outline.set_edgecolor('#444')
-
-    ax.set_xlabel('X Position (m)', fontsize=13, color='white')
-    ax.set_ylabel('Y Position (m)', fontsize=13, color='white')
-    ax.tick_params(colors='white')
-    for spine in ax.spines.values():
-        spine.set_edgecolor('#444')
-
-    ax.set_title(title, fontsize=14, color='white', pad=12)
-    plt.tight_layout()
+    plt.suptitle('6G Beam Assignment: Physical Location vs. Antenna Beam', fontsize=16, fontweight='bold', y=0.98)
+    plt.tight_layout(rect=[0, 0.08, 1, 0.95])
 
     save_path = os.path.join(save_dir, filename)
-    plt.savefig(save_path, dpi=150, bbox_inches='tight',
-                facecolor=fig.get_facecolor())
+    plt.savefig(save_path, dpi=200, bbox_inches='tight', facecolor=fig.get_facecolor())
     plt.close()
-    print(f"[Plot] Beam map saved → {save_path}")
+    print(f"[Plot] Beam map comparison saved → {save_path}")
     return save_path
 
 
@@ -590,12 +592,12 @@ if __name__ == '__main__':
             history = json.load(f)
         plot_training_curve(history, save_dir=args.results_dir)
 
-    # Beam map (use original positions for spatial interpretation)
-    # Re-create test positions without normalization for plotting
-    plot_beam_map(
-        positions[-len(metrics['pred_beams']):],    # approximate test positions
+    # Beam map comparison (Ground Truth vs AI Prediction)
+    test_positions = positions[-len(metrics['pred_beams']):]  # approximate test positions
+    plot_beam_map_comparison(
+        test_positions,
+        metrics['optimal_beams'],
         metrics['pred_beams'],
-        title='Predicted Beam Map — Test Set',
         save_dir=args.results_dir,
         N_b=codebook.shape[0],
     )

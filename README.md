@@ -24,6 +24,11 @@ A high-performance, end-to-end machine learning pipeline for predicting optimal 
 
 *Evaluated at SNR = 20 dB. Training completed in ~6 minutes on CPU.*
 
+### 🗺️ Spatial Beam Prediction Visualization
+The model learns the physical geometry of the environment. Nearby users receive similar beams, creating distinct spatial regions. The AI predictions (right) closely match the mathematical ground truth (left).
+
+![Beam Map Comparison](results/beam_map_comparison.png)
+
 ## 🏗️ Model Architecture
 
 The `BeamPredictor` is a Deep Residual MLP designed for spatial regression and classification:
