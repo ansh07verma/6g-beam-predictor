@@ -385,10 +385,10 @@ def plot_beam_map_comparison(
     """
     os.makedirs(save_dir, exist_ok=True)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7))
     fig.patch.set_facecolor('#ffffff')
+    fig.subplots_adjust(bottom=0.18, top=0.90, left=0.08, right=0.92)
     
-    # Use 'viridis' for intuitive dark-to-light progression (easier to read than 'hsv')
     cmap = 'viridis'
     
     # Plot 1: Ground Truth
@@ -398,6 +398,7 @@ def plot_beam_map_comparison(
     ax1.set_xlabel('X Position (meters)', fontsize=12)
     ax1.set_ylabel('Y Position (meters)', fontsize=12)
     ax1.grid(True, linestyle='--', alpha=0.3)
+    ax1.set_aspect('equal', adjustable='box')
     
     # Plot 2: AI Prediction
     sc2 = ax2.scatter(positions[:, 0], positions[:, 1], c=pred_labels, cmap=cmap,
@@ -406,24 +407,24 @@ def plot_beam_map_comparison(
     ax2.set_xlabel('X Position (meters)', fontsize=12)
     ax2.set_ylabel('Y Position (meters)', fontsize=12)
     ax2.grid(True, linestyle='--', alpha=0.3)
+    ax2.set_aspect('equal', adjustable='box')
     
-    # Shared Colorbar
-    cbar = fig.colorbar(sc2, ax=[ax1, ax2], fraction=0.02, pad=0.08)
-    cbar.set_label('Beam Index (0 to 63)\n(Similar colors = similar antenna directions)', fontsize=11)
+    # Shared Colorbar (placed to the right, outside the plots)
+    cbar_ax = fig.add_axes([0.94, 0.25, 0.02, 0.55])
+    cbar = fig.colorbar(sc2, cax=cbar_ax)
+    cbar.set_label('Beam Index (0 to 63)', fontsize=11)
     
-    # Plain English Explanation Box
+    # Plain English Explanation Box (placed at the bottom, below plots)
     explanation = (
-        "HOW TO READ THIS:\n"
-        "• Each dot is a user (e.g., a phone) in a 6G network.\n"
-        "• The color shows which antenna beam serves them best.\n"
-        "• Nearby users have similar colors, proving the AI learned the physical environment.\n"
+        "HOW TO READ THIS:  • Each dot is a user (e.g., a phone) in a 6G network.  "
+        "• The color shows which antenna beam serves them best.  "
+        "• Nearby users have similar colors, proving the AI learned the physical environment.  "
         "• The right plot (AI) closely matches the left plot (Ground Truth), showing high accuracy."
     )
     fig.text(0.5, 0.02, explanation, ha='center', va='bottom', fontsize=11,
-             bbox=dict(boxstyle='round,pad=1', facecolor='#e8f4f8', edgecolor='#2980b9', alpha=0.9))
+             bbox=dict(boxstyle='round,pad=0.8', facecolor='#e8f4f8', edgecolor='#2980b9', alpha=0.95))
 
-    plt.suptitle('6G Beam Assignment: Physical Location vs. Antenna Beam', fontsize=16, fontweight='bold', y=0.98)
-    plt.tight_layout(rect=[0, 0.08, 1, 0.95])
+    plt.suptitle('6G Beam Assignment: Physical Location vs. Antenna Beam', fontsize=16, fontweight='bold', y=0.97)
 
     save_path = os.path.join(save_dir, filename)
     plt.savefig(save_path, dpi=200, bbox_inches='tight', facecolor=fig.get_facecolor())

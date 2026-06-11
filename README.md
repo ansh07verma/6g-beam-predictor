@@ -29,6 +29,14 @@ The model learns the physical geometry of the environment. Nearby users receive 
 
 ![Beam Map Comparison](results/beam_map_comparison.png)
 
+### 📈 Training Progress & Performance
+The model converges smoothly over 200 epochs, achieving high accuracy while maintaining near-optimal data rates.
+
+| Training Curve | Achievable Rate CDF |
+| :---: | :---: |
+| ![Training Curve](results/training_curve.png) | ![Rate CDF](results/rate_cdf.png) |
+| *Loss decreases while accuracy climbs to 87%+* | *Predicted beams capture 98.6% of optimal capacity* |
+
 ## 🏗️ Model Architecture
 
 The `BeamPredictor` is a Deep Residual MLP designed for spatial regression and classification:
