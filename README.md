@@ -132,6 +132,3 @@ This codebase follows security best practices for ML pipelines:
 ## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-*Developed for VIT Chennai | BECE311L (Radar & Wireless Systems) | May 2026*
