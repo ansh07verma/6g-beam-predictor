@@ -1,0 +1,58 @@
+# ─── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ─── Virtual Environments ─────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env
+
+# ─── IDE / OS ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ─── Jupyter ──────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ─── Data & Checkpoints (Large binary files) ──────────────────────────────────
+data/scenarios/
+data/*.mat
+data/*.npz
+data/*.h5
+data/*.hdf5
+checkpoints/*.pt
+checkpoints/*.pth
+!checkpoints/.gitkeep
+
+# ─── Logs & Temporary Outputs ────────────────────────────────────────────────
+*.log
+logs/
+results/tmp/
+
+# ─── DeepMIMO Cache ───────────────────────────────────────────────────────────
+deepmimo_scenarios/

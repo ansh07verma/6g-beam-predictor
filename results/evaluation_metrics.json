@@ -1,0 +1,50 @@
+{
+  "model": "BeamPredictor (Deep Residual MLP)",
+  "scenario": "o1_28 (Outdoor-1, 28 GHz mmWave)",
+  "dataset": "DeepMIMO v4",
+  "training": {
+    "epochs": 200,
+    "best_epoch": 198,
+    "best_val_accuracy": 0.8722,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "optimizer": "Adam",
+    "scheduler": "CosineAnnealingLR",
+    "device": "cpu",
+    "total_training_time_seconds": 353.2
+  },
+  "evaluation": {
+    "top1_accuracy": 0.8794,
+    "top5_accuracy": 1.0,
+    "achievable_rate": {
+      "snr_db": 20.0,
+      "predicted_beam_bps_hz": 11.8144,
+      "optimal_beam_bps_hz": 11.9753,
+      "random_beam_bps_hz": 1.9608,
+      "rate_ratio": 0.9866
+    },
+    "acceptance_criteria": {
+      "top1_pass": true,
+      "top5_pass": true,
+      "rate_ratio_pass": true
+    }
+  },
+  "dataset_stats": {
+    "total_users": 497931,
+    "valid_users_after_filter": 21507,
+    "blocked_users_removed": 476424,
+    "unique_beams": 61,
+    "total_beam_classes": 64,
+    "train_samples": 15054,
+    "val_samples": 2151,
+    "test_samples": 4302
+  },
+  "model_architecture": {
+    "input_dim": 6,
+    "hidden_dims": [512, 256, 128],
+    "num_classes": 64,
+    "dropout": 0.2,
+    "n_res_blocks": 2,
+    "trainable_parameters": 1232576
+  }
+}

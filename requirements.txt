@@ -1,0 +1,28 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# ML-Based 6G Channel Modeling and Beam Prediction System
+# VIT Chennai · BECE311L · May 2026
+# ─────────────────────────────────────────────────────────────────────────────
+
+# DeepMIMO ray-tracing dataset loader (v4 — Python 3.10+ compatible)
+# v4.0.0b11 is the latest pre-release that works on Python 3.10
+# Use `pip install "deepmimo>=4.0.0b11" --pre` to install
+deepmimo==4.0.0b11
+
+# Numerical computing
+numpy>=1.24.0
+
+# Deep learning (CPU-safe; GPU auto-detected via torch.cuda.is_available())
+torch>=2.0.0
+
+# ML utilities: train/test split, StandardScaler normalization
+scikit-learn>=1.3.0
+
+# Plotting: training curves, beam maps, rate CDFs
+matplotlib>=3.7.0
+
+# Jupyter notebooks for exploration and results
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# Progress bars for training loop and channel computation
+tqdm>=4.65.0
