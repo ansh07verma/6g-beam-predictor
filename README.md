@@ -24,11 +24,6 @@ A high-performance, end-to-end machine learning pipeline for predicting optimal 
 
 *Evaluated at SNR = 20 dB. Training completed in ~6 minutes on CPU.*
 
-### 🗺️ Spatial Beam Prediction Visualization
-The model learns the physical geometry of the environment. Nearby users receive similar beams, creating distinct spatial regions. The AI predictions (right) closely match the mathematical ground truth (left).
-
-![Beam Map Comparison](results/beam_map_comparison.png)
-
 ### 📈 Training Progress & Performance
 The model converges smoothly over 200 epochs, achieving high accuracy while maintaining near-optimal data rates.
 
@@ -117,7 +112,7 @@ jupyter notebook notebooks/02_results.ipynb
 │   ├── 01_explore_data.ipynb
 │   ├── 02_results.ipynb
 │   └── DeepMIMO_O1_28_Downloader.ipynb
-├── results/              # Generated evaluation plots (training_curve.png, beam_map.png, rate_cdf.png)
+├── results/              # Generated evaluation plots (training_curve.png, rate_cdf.png)
 ├── src/                  # Core source code
 │   ├── __init__.py
 │   ├── dataset.py        # Data loading, DFT codebook, and DataLoader construction
